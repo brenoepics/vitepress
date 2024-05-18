@@ -196,8 +196,16 @@ export function useActiveAnchor(
     const activeLink = prevActiveLink
 
     if (activeLink) {
+      const offsetTop = activeLink.offsetTop + 39
+      const asideContainer =
+        container.value.parentElement?.parentElement?.parentElement
+      const rect = activeLink.getBoundingClientRect()
+      const isInViewPort = rect.top >= 65 && rect.bottom <= window.innerHeight
+      if (asideContainer && !isInViewPort) {
+        asideContainer.scrollTop = offsetTop
+      }
       activeLink.classList.add('active')
-      marker.value.style.top = activeLink.offsetTop + 39 + 'px'
+      marker.value.style.top = offsetTop + 'px'
       marker.value.style.opacity = '1'
     } else {
       marker.value.style.top = '33px'
